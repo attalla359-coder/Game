@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاجة صغيرة ليكي 🌷</title>
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+html,body{
+  width:100%;
+  min-height:100%;
+}
+body{
+  font-family:
+    Tahoma,
+    Arial,
+    sans-serif;
+  background:
+    radial-gradient(circle at top right,#ffe3ed,transparent 35%),
+    radial-gradient(circle at bottom left,#f8dce8,transparent 35%),
+    linear-gradient(135deg,#fff8fb,#ffeef4);
+  color:#4b3039;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  overflow-x:hidden;
+}
+/* =========================
+   القلوب المتحركة
+========================= */
+.floating-heart{
+  position:fixed;
+  bottom:-30px;
+  font-size:20px;
+  opacity:.5;
+  pointer-events:none;
+  animation:floatUp linear forwards;
+  z-index:0;
+}
+@keyframes floatUp{
+  0%{
+    transform:translateY(0) rotate(0deg);
+    opacity:0;
+  }
+  10%{
+    opacity:.55;
+  }
+  90%{
+    opacity:.4;
+  }
+  100%{
+    transform:
+      translateY(-110vh)
+      rotate(360deg);
+    opacity:0;
+  }
+}
+/* =========================
+   الحاوية
+========================= */
+.game{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:520px;
+  background:rgba(255,255,255,.94);
+  border-radius:30px;
+  padding:28px 22px;
+  box-shadow:
+    0 20px 70px rgba(170,70,105,.18);
+  text-align:center;
+  overflow:hidden;
+}
+/* =========================
+   البداية
+========================= */
+.start-screen{
+  display:block;
+}
+.start-icon{
+  font-size:70px;
+  margin-bottom:12px;
+  animation:
+    heartBeat 1.6s infinite;
+}
+@keyframes heartBeat{
+  0%,100%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1.12);
+  }
+}
+h1{
+  color:#c84269;
+  font-size:28px;
+  line-height:1.5;
+  margin-bottom:12px;
+}
+.start-text{
+  color:#765762;
+  font-size:16px;
+  line-height:2;
+  margin-bottom:25px;
+}
+.start-button{
+  width:100%;
+  border:0;
+  border-radius:18px;
+  padding:16px;
+  background:
+    linear-gradient(
+      135deg,
+      #c94069,
+      #e66f91
+    );
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:
+    0 10px 25px rgba(201,64,105,.25);
+  transition:.25s;
+}
+.start-button:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    0 14px 30px rgba(201,64,105,.3);
+}
+/* =========================
+   شاشة اللعبة
+========================= */
+.game-screen{
+  display:none;
+}
+.top-heart{
+  font-size:45px;
+  margin-bottom:8px;
+}
+.stage-title{
+  color:#c84269;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+/* =========================
+   شريط التقدم
+========================= */
+.progress{
+  width:100%;
+  height:8px;
+  background:#f4dce4;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:25px;
+}
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:
+    linear-gradient(
+      90deg,
+      #d34d75,
+      #ef91ad
+    );
+  transition:.5s;
+}
+/* =========================
+   السؤال
+========================= */
+.question{
+  font-size:21px;
+  font-weight:bold;
+  line-height:1.8;
+  color:#49313a;
+  margin-bottom:23px;
+}
+.hint{
+  font-size:13px;
+  color:#a07c87;
+  margin-bottom:17px;
+}
+/* =========================
+   الاختيارات
+========================= */
+.answers{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.answer{
+  width:100%;
+  border:2px solid #f1d7df;
+  background:#fff;
+  border-radius:18px;
+  padding:15px 17px;
+  font-size:16px;
+  line-height:1.5;
+  color:#523942;
+  cursor:pointer;
+  transition:.25s;
+}
+.answer:hover{
+  border-color:#d75b7e;
+  background:#fff5f8;
+  transform:translateY(-2px);
+}
+.answer.selected{
+  border-color:#d24c73;
+  background:#fff0f5;
+  color:#b93660;
+  transform:scale(1.02);
+}
+/* =========================
+   الرسالة بعد الاختيار
+========================= */
+.message-box{
+  display:none;
+  margin-top:20px;
+  padding:20px 17px;
+  background:
+    linear-gradient(
+      135deg,
+      #fff5f8,
+      #fffafd
+    );
+  border:1px solid #f1d8e1;
+  border-radius:20px;
+  animation:appear .45s ease;
+}
+@keyframes appear{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+.message-icon{
+  font-size:35px;
+  margin-bottom:10px;
+}
+.message-text{
+  font-size:16px;
+  line-height:2;
+  color:#64454f;
+}
+/* =========================
+   زر التالي
+========================= */
+.next-button{
+  display:none;
+  width:100%;
+  margin-top:18px;
+  border:0;
+  border-radius:17px;
+  padding:15px;
+  background:#c94169;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.25s;
+}
+.next-button:hover{
+  background:#b8325a;
+  transform:translateY(-2px);
+}
+/* =========================
+   النهاية
+========================= */
+.final-screen{
+  display:none;
+}
+.final-icon{
+  font-size:75px;
+  margin-bottom:15px;
+  animation:
+    heartBeat 1.5s infinite;
+}
+.final-screen h2{
+  color:#c83f69;
+  font-size:28px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+.final-message{
+  font-size:17px;
+  line-height:2.2;
+  color:#62434e;
+}
+.final-message strong{
+  color:#c43d66;
+}
+.restart-button{
+  width:100%;
+  margin-top:25px;
+  padding:15px;
+  border:0;
+  border-radius:17px;
+  background:#c94169;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+/* =========================
+   الموبايل
+========================= */
+@media(max-width:420px){
+  body{
+    padding:12px;
+  }
+  .game{
+    padding:25px 17px;
+    border-radius:25px;
+  }
+  h1{
+    font-size:25px;
+  }
+  .question{
+    font-size:19px;
+  }
+  .answer{
+    font-size:15px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="game">
+  <!-- =====================
+       البداية
+  ====================== -->
+  <div
+    class="start-screen"
+    id="startScreen"
+  >
+<div class="start-icon">
+  💌
+</div>
+<h1>
+  حاجة صغيرة ليكي
+</h1>
+<div class="start-text">
+  مش اختبار...<br>
+  ومفيش إجابات غلط...<br>
+  دي مجرد 10 مراحل صغيرة،<br>
+  كل مرحلة فيها حاجة حلوة مستنياكي ❤️
+</div>
+<button
+  class="start-button"
+  onclick="startGame()"
+>
+  نبدأ؟ 🌷
+</button>
+  </div>
+  <!-- =====================
+       اللعبة
+  ====================== -->
+  <div
+    class="game-screen"
+    id="gameScreen"
+  >
+<div class="top-heart">
+  💗
+</div>
+<div
+  class="stage-title"
+  id="stageTitle"
+>
+  المرحلة 1 من 10
+</div>
+<div class="progress">
+  <div
+    class="progress-bar"
+    id="progressBar"
+  ></div>
+</div>
+<div
+  class="question"
+  id="question"
+></div>
+<div
+  class="hint"
+  id="hint"
+>
+  اختاري الإجابة اللي شبهك أكتر 🌷
+</div>
+<div
+  class="answers"
+  id="answers"
+></div>
+<div
+  class="message-box"
+  id="messageBox"
+>
+  <div
+    class="message-icon"
+    id="messageIcon"
+  >
+    💌
+  </div>
+  <div
+    class="message-text"
+    id="messageText"
+  ></div>
+</div>
+<button
+  class="next-button"
+  id="nextButton"
+  onclick="nextStage()"
+>
+  نكمل؟ ❤️
+</button>
+  </div>
+  <!-- =====================
+       النهاية
+  ====================== -->
+  <div
+    class="final-screen"
+    id="finalScreen"
+  >
+<div class="final-icon">
+  🎁
+</div>
+<h2>
+  وصلتي لآخر مرحلة ❤️
+</h2>
+<div class="final-message">
+  يمكن اللعبة خلصت...
+  <br><br>
+  بس أنا كنت عايز أوصلك لحاجة أبسط من أي هدية:
+  <br><br>
+  <strong>
+    إنك تعرفي إن وجودك لوحده حاجة تستاهل الفرح.
+  </strong>
+  <br><br>
+  أتمنى كل مرة تفتحي فيها الصفحة دي
+  تفتكري إن في حد بيتمنى لكِ
+  أيام حلوة، وضحكة من قلبك،
+  وراحة تليق بيكي.
+  <br><br>
+  ومهما كان يومك...
+  <br>
+  <strong>
+    أتمنى تفضلي دايمًا فاكرة إنك تستاهلي كل حاجة جميلة. 🌷
+  </strong>
+  <br><br>
+  — من شخص بيتمنى يشوفك مبسوطة دائمًا ❤️
+</div>
+<button
+  class="restart-button"
+  onclick="restartGame()"
+>
+  نعيدها من الأول؟ 💕
+</button>
+  </div>
+</div>
+<script>
+/* =========================================
+   المراحل العشرة
+========================================= */
+const stages = [
+  {
+    question:
+      "لو يومك كان محتاج حاجة صغيرة تفرّحك، تختاري إيه؟",
+    answers:[
+      "كلمة حلوة 🌷",
+      "ضحكة من القلب 😂",
+      "رسالة مفاجئة 💌",
+      "حد يطمن عليا 🤍"
+    ],
+    messages:[
+      "وأنا أتمنى دايمًا تلاقي الكلام اللي يخلي يومك أخف وأجمل. 🌷",
+      "يا رب ضحكتك تفضل موجودة حتى في الأيام اللي مش سهلة. 😂❤️",
+      "يمكن رسالة صغيرة تغيّر يوم كامل... عشان كده أتمنى توصلك دايمًا حاجة تفرّحك. 💌",
+      "في ناس مجرد السؤال عنهم بيكون له معنى... وإنتِ تستاهلي حد يطمن عليكي دايمًا. 🤍"
+    ],
+    icons:["🌷","😂","💌","🤍"]
+  },
+  {
+    question:
+      "لما تكوني متضايقة، إيه أكتر حاجة تحبي تسمعيها؟",
+    answers:[
+      "متقلقيش، كل حاجة هتعدي 🤍",
+      "أنا فخور بيكي 🌸",
+      "إنتِ أقوى مما تتخيلي 💪",
+      "أنا جنبك ❤️"
+    ],
+    messages:[
+      "وأهو تذكير صغير: مهما كان اليوم تقيل، مش كل حاجة وحشة بتفضل. بكرة ممكن يكون ألطف بكتير. 🤍",
+      "وأنا فعلًا أتمنى تفضلي شايفة الحاجات الحلوة اللي فيكي حتى في الأيام اللي بتنسيها. 🌸",
+      "يمكن ساعات الدنيا تخلي الواحد يشك في نفسه... بس أتمنى عمرك ما تنسي قد إيه إنتِ قادرة. 💪❤️",
+      "وأحيانًا مفيش كلام محتاجينه غير إننا نعرف إن في حد موجود. ❤️"
+    ],
+    icons:["🤍","🌸","💪","❤️"]
+  },
+  {
+    question:
+      "إيه أكتر حاجة تتمنيها لنفسك الفترة الجاية؟",
+    answers:[
+      "راحة بال 🌿",
+      "نجاح كبير ✨",
+      "أيام حلوة 🌷",
+      "كلهم مع بعض ❤️"
+    ],
+    messages:[
+      "من قلبي أتمنى راحة البال تيجي لك من غير ما تضطري تدفعي تمنها من راحتك. 🌿",
+      "وأتمنى كل تعب بتتعبيه يتحول في يوم لشيء يخليكي فخورة بنفسك. ✨",
+      "يا رب الفترة الجاية يكون فيها من الأيام الحلوة اللي تخليكي تنسي الأيام الصعبة. 🌷",
+      "وأنا أتمنى لكِ كل ده... وأكثر كمان، لأنك تستاهلي الخير كله. ❤️"
+    ],
+    icons:["🌿","✨","🌷","❤️"]
+  },
+  {
+    question:
+      "لو قدرتي تحتفظي بحاجة واحدة طول العمر، تختاري إيه؟",
+    answers:[
+      "ذكريات حلوة 📸",
+      "ناس بتحبني 🤍",
+      "ضحك كتير 😂",
+      "قلب مرتاح 🌸"
+    ],
+    messages:[
+      "يا رب ذكرياتك الحلوة تفضل أكتر بكتير من أي ذكرى وحشة. 📸❤️",
+      "وأتمنى دايمًا تكوني محاطة بناس وجودهم في حياتك إضافة مش عبء. 🤍",
+      "الضحكة الحقيقية من أجمل الحاجات اللي ممكن نحتفظ بيها... يا رب تفضلي تضحكي كتير. 😂",
+      "وأكتر حاجة أتمنّاها لكِ إن قلبك يعرف معنى الراحة بجد. 🌸"
+    ],
+    icons:["📸","🤍","😂","🌸"]
+  },
+  {
+    question:
+      "إيه أكتر كلمة تحبي حد يقولها لكِ؟",
+    answers:[
+      "أنا فخور بيكي ✨",
+      "إنتِ جميلة 🌷",
+      "إنتِ مهمة 🤍",
+      "إنتِ تستاهلي الخير ❤️"
+    ],
+    messages:[
+      "وأنا أتمنى يكون عندك دايمًا سبب يخليكي فخورة بنفسك قبل أي حد تاني. ✨",
+      "الجمال مش بس في الشكل... في الروح، في الضحكة، وفي التفاصيل اللي بتخلي الشخص مختلف. 🌷",
+      "وجودك له قيمة، حتى في الأيام اللي ممكن تحسي فيها بعكس كده. 🤍",
+      "وأيوه... تستاهلي الخير، والفرحة، والراحة، وكل حاجة حلوة تيجي من غير وجع. ❤️"
+    ],
+    icons:["✨","🌷","🤍","❤️"]
+  },
+  {
+    question:
+      "لو جالك يوم كامل من غير أي مسؤوليات، تعملي إيه؟",
+    answers:[
+      "أنام وأرتاح 😴",
+      "أخرج وأغير جو 🌸",
+      "أقعد مع حد بحبه ❤️",
+      "أعمل حاجة بحبها ✨"
+    ],
+    messages:[
+      "وبالمناسبة... الراحة مش كسل. أحيانًا الواحد محتاج يقف شوية عشان يعرف يكمل. 😴🤍",
+      "يا رب دايمًا تلاقي وقت لنفسك وللحاجات اللي بتخلي روحك أخف. 🌸",
+      "أجمل الأوقات غالبًا مش محتاجة مكان مميز... محتاجة شخص يخلي الوقت مميز. ❤️",
+      "متنسيش نفسك وسط كل حاجة. الحاجات اللي بتحبيها تستاهل جزء من وقتك. ✨"
+    ],
+    icons:["😴","🌸","❤️","✨"]
+  },
+  {
+    question:
+      "لو أقدر أديكي هدية مش ملموسة، تختاري إيه؟",
+    answers:[
+      "راحة بال 🤍",
+      "ثقة في نفسك ✨",
+      "فرحة كبيرة 🎁",
+      "سنة كاملة من الأيام الحلوة 🌷"
+    ],
+    messages:[
+      "لو الراحة هدية، كنت أتمنى أقدر أحطها في إيدك وأقولك: دي عشان تستاهليها. 🤍",
+      "وأتمنى تشوفي نفسك بعين ألطف... لأن فيكي حاجات جميلة يمكن إنتِ مش واخدة بالك منها. ✨",
+      "يا رب الفرحة اللي مستنياها تيجي في وقت يخليكي تقولي: كانت تستاهل الانتظار. 🎁",
+      "لو أقدر أختار لكِ حاجة، هختار سنة كلها لحظات تخليكي تبتسمي لما تفتكريها. 🌷"
+    ],
+    icons:["🤍","✨","🎁","🌷"]
+  },
+  {
+    question:
+      "إيه أكتر حاجة تتمني تفتكريها لما تكبري؟",
+    answers:[
+      "إني عشت مبسوطة 🌷",
+      "إني حققت اللي نفسي فيه ✨",
+      "إني كنت محاطة بناس حلوة 🤍",
+      "إني كنت على طبيعتي ❤️"
+    ],
+    messages:[
+      "يا رب لما تبصي ورا تلاقي إن أجمل ذكرياتك كانت أكتر من كل حاجة تانية. 🌷",
+      "وأتمنى كل حلم صغير عندك يلاقي طريقه ليكي في الوقت الصح. ✨",
+      "الناس الحلوة رزق... ويا رب يفضل حواليكي منهم كتير. 🤍",
+      "وأجمل حاجة ممكن يعيشها الإنسان إنه يكون نفسه من غير ما يخاف إنه مش كفاية. ❤️"
+    ],
+    icons:["🌷","✨","🤍","❤️"]
+  },
+  {
+    question:
+      "لو عندك أمنية واحدة دلوقتي، تحبي تكون إيه؟",
+    answers:[
+      "أكون مبسوطة 🤍",
+      "أحقق حلمي ✨",
+      "ألاقي راحتي 🌿",
+      "أشوف اللي بحبهم بخير ❤️"
+    ],
+    messages:[
+      "وأتمنى أمنيتك البسيطة دي تكون أقرب ليكي مما تتخيلي. 🤍",
+      "خلي حلمك قدامك حتى لو الطريق طويل... الوصول بيبدأ بخطوة. ✨",
+      "ربنا يرزقك راحة تخلي كل اللي فات مجرد ذكرى. 🌿",
+      "دي من أجمل الأمنيات... وربنا يطمن قلبك على كل حد بتحبيه. ❤️"
+    ],
+    icons:["🤍","✨","🌿","❤️"]
+  },
+  {
+    question:
+      "آخر مرحلة... لو في رسالة واحدة نفسك توصلك النهارده، تختاري إيه؟",
+    answers:[
+      "إنتِ تستاهلي الفرح 🌷",
+      "خليكي دايمًا زي ما إنتِ 🤍",
+      "الأيام الحلوة جاية ✨",
+      "إنتِ غالية أكتر مما تتخيلي ❤️"
+    ],
+    messages:[
+      "ودي مش مجرد رسالة لعبة... أتمنى فعلًا تفضلي فاكرة إنك تستاهلي الفرح من غير سبب. 🌷",
+      "متغيريش نفسك عشان ترضي الدنيا... خلي دايمًا جزء منك ملك ليكي إنتِ. 🤍",
+      "يمكن مش كل حاجة بتحصل في الوقت اللي نفسنا فيه، بس ده مش معناه إن الحلو مش جاي. ✨",
+      "ودي يمكن أهم رسالة في اللعبة كلها... متنسيش أبدًا إن وجودك له قيمة وإنك غالية. ❤️"
+    ],
+    icons:["🌷","🤍","✨","❤️"]
+  }
+];
+let currentStage = 0;
+let selected = false;
+/* =========================================
+   بداية اللعبة
+========================================= */
+function startGame(){
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("gameScreen").style.display="block";
+  currentStage=0;
+  loadStage();
+}
+/* =========================================
+   تحميل المرحلة
+========================================= */
+function loadStage(){
+  selected=false;
+  const stage=stages[currentStage];
+  document.getElementById("stageTitle").textContent=
+    `المرحلة ${currentStage+1} من ${stages.length}`;
+  document.getElementById("question").textContent=
+    stage.question;
+  document.getElementById("progressBar").style.width=
+    `${((currentStage)/stages.length)*100}%`;
+  document.getElementById("messageBox").style.display="none";
+  document.getElementById("nextButton").style.display="none";
+  const answers=
+    document.getElementById("answers");
+  answers.innerHTML="";
+  stage.answers.forEach((answer,index)=>{
+    const button=
+      document.createElement("button");
+    button.className="answer";
+    button.textContent=answer;
+    button.onclick=()=>{
+      chooseAnswer(index,button);
+    };
+    answers.appendChild(button);
+  });
+  if(currentStage===stages.length-1){
+    document.getElementById("nextButton").textContent=
+      "شوفي الرسالة الأخيرة 🎁";
+  }else{
+    document.getElementById("nextButton").textContent=
+      "نكمل؟ ❤️";
+  }
+}
+/* =========================================
+   اختيار الإجابة
+========================================= */
+function chooseAnswer(index,button){
+  if(selected)return;
+  selected=true;
+  button.classList.add("selected");
+  const stage=stages[currentStage];
+  const buttons=
+    document.querySelectorAll(".answer");
+  buttons.forEach(btn=>{
+    btn.disabled=true;
+  });
+  document.getElementById("messageIcon").textContent=
+    stage.icons[index];
+  document.getElementById("messageText").textContent=
+    stage.messages[index];
+  document.getElementById("messageBox").style.display=
+    "block";
+  document.getElementById("nextButton").style.display=
+    "block";
+}
+/* =========================================
+   المرحلة التالية
+========================================= */
+function nextStage(){
+  currentStage++;
+  if(currentStage>=stages.length){
+    showFinal();
+    return;
+  }
+  loadStage();
+}
+/* =========================================
+   النهاية
+========================================= */
+function showFinal(){
+  document.getElementById("gameScreen").style.display=
+    "none";
+  document.getElementById("finalScreen").style.display=
+    "block";
+}
+/* =========================================
+   إعادة اللعبة
+========================================= */
+function restartGame(){
+  currentStage=0;
+  selected=false;
+  document.getElementById("finalScreen").style.display=
+    "none";
+  document.getElementById("gameScreen").style.display=
+    "none";
+  document.getElementById("startScreen").style.display=
+    "block";
+}
+/* =========================================
+   قلوب عائمة
+========================================= */
+function createHeart(){
+  const heart=
+    document.createElement("div");
+  heart.className="floating-heart";
+  const hearts=[
+    "❤️",
+    "💗",
+    "💖",
+    "💕",
+    "🌸",
+    "✨"
+  ];
+  heart.textContent=
+    hearts[
+      Math.floor(
+        Math.random()*hearts.length
+      )
+    ];
+  heart.style.left=
+    Math.random()*100+"vw";
+  heart.style.animationDuration=
+    (7+Math.random()*7)+"s";
+  heart.style.fontSize=
+    (14+Math.random()*15)+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>{
+    heart.remove();
+  },15000);
+}
+setInterval(createHeart,1200);
+/* تشغيل أولي */
+</script>
+</body>
+</html>
