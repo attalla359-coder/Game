@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قد إيه إنتِ عارفة تفاصيلك؟ ❤️</title>
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+body{
+  min-height:100vh;
+  font-family:Tahoma, Arial, sans-serif;
+  background:linear-gradient(135deg,#fff0f5,#ffe4ec,#fff8fa);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  color:#3b2630;
+}
+.game{
+  width:100%;
+  max-width:520px;
+  background:rgba(255,255,255,.92);
+  border-radius:28px;
+  padding:28px 22px;
+  box-shadow:0 15px 50px rgba(180,70,100,.18);
+  text-align:center;
+}
+.heart{
+  font-size:55px;
+  margin-bottom:10px;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.12)}
+}
+h1{
+  font-size:26px;
+  color:#c83f69;
+  margin-bottom:10px;
+}
+.subtitle{
+  color:#80606b;
+  font-size:15px;
+  line-height:1.7;
+  margin-bottom:22px;
+}
+.progress{
+  height:8px;
+  background:#f5dce4;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:25px;
+}
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#d94d76,#f18ba7);
+  transition:.4s;
+}
+.question-number{
+  color:#c83f69;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+.question{
+  font-size:20px;
+  font-weight:bold;
+  line-height:1.7;
+  margin-bottom:22px;
+}
+.answers{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.answer{
+  width:100%;
+  padding:15px 18px;
+  border:2px solid #f1d6df;
+  background:#fff;
+  border-radius:17px;
+  font-size:16px;
+  color:#4d343d;
+  cursor:pointer;
+  transition:.25s;
+}
+.answer:hover{
+  transform:translateY(-2px);
+  border-color:#d95a7c;
+  background:#fff5f8;
+}
+.answer.correct{
+  background:#e8f8ef;
+  border-color:#48ad70;
+  color:#257044;
+}
+.answer.wrong{
+  background:#fff0f0;
+  border-color:#df6262;
+  color:#a83232;
+}
+.answer:disabled{
+  cursor:default;
+}
+.next{
+  display:none;
+  margin-top:20px;
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:17px;
+  background:#c94169;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.next:hover{
+  background:#b53259;
+}
+.result{
+  display:none;
+}
+.result-icon{
+  font-size:70px;
+  margin-bottom:15px;
+}
+.result h2{
+  color:#c83f69;
+  font-size:27px;
+  margin-bottom:15px;
+}
+.score{
+  font-size:22px;
+  font-weight:bold;
+  margin:15px 0;
+}
+.result-message{
+  font-size:17px;
+  line-height:2;
+  color:#654751;
+  margin-bottom:25px;
+}
+.restart{
+  border:none;
+  background:#c94169;
+  color:white;
+  padding:15px 30px;
+  border-radius:17px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.footer{
+  margin-top:20px;
+  font-size:12px;
+  color:#aa8792;
+}
+</style>
+</head>
+<body>
+<div class="game">
+  <div id="gameScreen">
+<div class="heart">❤️</div>
+<h1>قد إيه إنتِ عارفة تفاصيلك؟</h1>
+<div class="subtitle">
+  شوية أسئلة صغيرة...<br>
+  نشوف بقى مين فينا حافظ التاني أكتر 😊
+</div>
+<div class="progress">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="question-number" id="questionNumber"></div>
+<div class="question" id="question"></div>
+<div class="answers" id="answers"></div>
+<button class="next" id="nextButton" onclick="nextQuestion()">
+  السؤال اللي بعده ❤️
+</button>
+<div class="footer">
+  سؤال ورا سؤال... والنتيجة في الآخر 🌷
+</div>
+  </div>
+  <div class="result" id="resultScreen">
+<div class="result-icon" id="resultIcon">❤️</div>
+<h2>خلصنا اللعبة!</h2>
+<div class="score" id="score"></div>
+<div class="result-message" id="resultMessage"></div>
+<button class="restart" onclick="restartGame()">
+  نلعب تاني؟ 💕
+</button>
+  </div>
+</div>
+<script>
+const questions = [
+  {
+    question:"إيه أكتر حاجة ممكن تخليني أبتسم من غير ما أحس؟",
+    answers:[
+      "رسالة منك",
+      "ضحكتك",
+      "كلمة لطيفة منك",
+      "كل اللي فوق ❤️"
+    ],
+    correct:3
+  },
+  {
+    question:"لو كان قدامي اختيار إني أقضي وقت معاكي في أي مكان، أختار إيه؟",
+    answers:[
+      "مكان فخم",
+      "مكان هادي",
+      "أي مكان طالما إنتِ معايا",
+      "مكان مليان ناس"
+    ],
+    correct:2
+  },
+  {
+    question:"إيه أكتر تفصيلة صغيرة ممكن أفضل فاكرها فيكي؟",
+    answers:[
+      "طريقة كلامك",
+      "ضحكتك",
+      "أسلوبك اللطيف",
+      "كل التفاصيل الصغيرة"
+    ],
+    correct:3
+  },
+  {
+    question:"لما أكون مضايق، إيه أكتر حاجة ممكن تفرق معايا؟",
+    answers:[
+      "إنك تسيبيني لوحدي",
+      "إنك تكلمني وتطمني عليا",
+      "إنك تغيري الموضوع",
+      "إنك تتجاهليني"
+    ],
+    correct:1
+  },
+  {
+    question:"إيه أكتر حاجة بحبها في وجودك؟",
+    answers:[
+      "إنك بتخليني أضحك",
+      "إنك بتطمني",
+      "إني بكون على طبيعتي معاكي",
+      "كلهم ❤️"
+    ],
+    correct:3
+  },
+  {
+    question:"إيه أكتر حاجة نفسي تفضّل موجودة بينا مهما حصل؟",
+    answers:[
+      "الضحك",
+      "الصراحة",
+      "الأمان",
+      "كل ده مع بعض"
+    ],
+    correct:3
+  },
+  {
+    question:"لو طلبت منك تختاري كلمة واحدة توصف مكانتك عندي، تختاري إيه؟",
+    answers:[
+      "مهمة",
+      "غالية",
+      "مميزة",
+      "رفيقة الروح ❤️"
+    ],
+    correct:3
+  },
+  {
+    question:"إيه أكتر حاجة ممكن تخليني أفتكرك فجأة؟",
+    answers:[
+      "أغنية",
+      "مكان",
+      "كلمة",
+      "أي حاجة بتفكرني بيكي"
+    ],
+    correct:3
+  },
+  {
+    question:"والسؤال الأخير... إنتِ عارفة إنتِ بالنسبالي إيه؟",
+    answers:[
+      "شخص مهم",
+      "أقرب حد",
+      "حد غالي جدًا",
+      "شخص مميز في حياتي ❤️"
+    ],
+    correct:3
+  }
+];
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+function loadQuestion(){
+  answered = false;
+  const q = questions[currentQuestion];
+  document.getElementById("questionNumber").textContent =
+    `السؤال ${currentQuestion + 1} من ${questions.length}`;
+  document.getElementById("question").textContent = q.question;
+  document.getElementById("progressBar").style.width =
+    `${((currentQuestion) / questions.length) * 100}%`;
+  const answersContainer = document.getElementById("answers");
+  answersContainer.innerHTML = "";
+  document.getElementById("nextButton").style.display = "none";
+  q.answers.forEach((answer,index)=>{
+    const button = document.createElement("button");
+    button.className = "answer";
+    button.textContent = answer;
+    button.onclick = () => checkAnswer(index,button);
+    answersContainer.appendChild(button);
+  });
+}
+function checkAnswer(selected,button){
+  if(answered) return;
+  answered = true;
+  const q = questions[currentQuestion];
+  const allAnswers =
+    document.querySelectorAll(".answer");
+  allAnswers.forEach(btn => btn.disabled = true);
+  if(selected === q.correct){
+    score++;
+    button.classList.add("correct");
+  }else{
+    button.classList.add("wrong");
+    allAnswers[q.correct].classList.add("correct");
+  }
+  document.getElementById("nextButton").style.display = "block";
+}
+function nextQuestion(){
+  currentQuestion++;
+  if(currentQuestion < questions.length){
+    loadQuestion();
+  }else{
+    showResult();
+  }
+}
+function showResult(){
+  document.getElementById("gameScreen").style.display = "none";
+  document.getElementById("resultScreen").style.display = "block";
+  document.getElementById("score").textContent =
+    `نتيجتك: ${score} / ${questions.length}`;
+  let message = "";
+  let icon = "❤️";
+  if(score === 9){
+    icon = "😍";
+    message =
+      "ممتاز! واضح إنك عارفة تفاصيل كتير عني ❤️<br><br>" +
+      "وجودك واهتمامك بيفرقوا معايا جدًا.";
+  }else if(score >= 7){
+    icon = "🥹";
+    message =
+      "نتيجة جميلة! واضح إنك عارفة حاجات كتير عني ❤️<br><br>" +
+      "ولسه قدامنا تفاصيل لطيفة نكتشفها مع الوقت.";
+  }else if(score >= 4){
+    icon = "🤭";
+    message =
+      "نتيجة حلوة، بس محتاجين نتكلم أكتر شوية 😊<br><br>" +
+      "المهم إن بينا وقت جميل وتفاصيل كتير لسه جاية.";
+  }else{
+    icon = "😂";
+    message =
+      "واضح إننا محتاجين نتعرف على بعض أكتر 😂❤️<br><br>" +
+      "ولا يهمك، المهم إن كل يوم فيه فرصة نعرف حاجة جديدة.";
+  }
+  document.getElementById("resultIcon").textContent = icon;
+  document.getElementById("resultMessage").innerHTML = message;
+}
+function restartGame(){
+  currentQuestion = 0;
+  score = 0;
+  document.getElementById("resultScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+  loadQuestion();
+}
+loadQuestion();
+</script>
+</body>
+</html>
